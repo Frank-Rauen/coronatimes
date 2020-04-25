@@ -25,8 +25,4 @@ class Photo(models.Model):
     url = models.CharField(max_length=200)
     blogpost = models.ForeignKey(Blogpost, on_delete=models.CASCADE)
     def __str__(self):
-<<<<<<< HEAD
         return f"Photo for blogpost_id: {self.blogpost_id} @{self.url}"
-=======
-        return f"Photo for blogpost_id: {self.blogpost_id} @{self.url}"
->>>>>>> b8a7472c38a771a57e57d1504060b5be7add47fc

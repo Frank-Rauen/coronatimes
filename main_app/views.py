@@ -20,6 +20,7 @@ import boto3
 
 from .models import Blogpost, Comment, Photo
 from .forms import CommentForm
+
 S3_BASE_URL = 'https://s3-us-west-1.amazonaws.com/'
 BUCKET = 'catcollector-nn'
 
@@ -90,12 +91,8 @@ def add_comment(request, blogpost_id):
         new_comment = form.save(commit=False)
         new_comment.blogpost_id = blogpost_id
         new_comment.save()
-<<<<<<< HEAD
-    return redirect('detail', blogpost_id = blogpost_id)
-=======
     return redirect('detail', blogpost_id=blogpost_id)
 
->>>>>>> b8a7472c38a771a57e57d1504060b5be7add47fc
 
 @login_required
 def add_photo(request, blogpost_id):
@@ -114,11 +111,8 @@ def add_photo(request, blogpost_id):
     return redirect('detail', blogpost_id=blogpost_id)
 
 
-<<<<<<< HEAD
-class BlogpostCreate(CreateView,LoginRequiredMixin):
-=======
+
 class BlogpostCreate(LoginRequiredMixin,CreateView):
->>>>>>> b8a7472c38a771a57e57d1504060b5be7add47fc
     model = Blogpost
     fields = ['title', 'body']
     success_url = '/blogposts/'
