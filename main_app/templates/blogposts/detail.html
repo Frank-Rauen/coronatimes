@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 {% block content %}
-
 <h1>{{blogpost.title}}</h1>
 <div class="row">
 <div class="col s6">
@@ -13,7 +12,24 @@
     <a href="{% url 'blogposts_update' blogpost.id %}">Edit</a>
     <a href="{% url 'blogposts_delete' blogpost.id %}">Delete</a  
   </div>
-  </div>
+</div>
+  {%for photo in blogpost.photo_set.all%}
+    <img class="responsive-img card-panel" src="{{photo.url}}" />
+    {% empty %}
+    <div class="card-panel teal-text center-align">No Photos Uploaded</div>
+    {% endfor %}
+    <form
+      action="{% url 'add_photo' blogpost.id %}"
+      enctype="multipart/form-data"
+      method="POST"
+      class="card-panel"
+    >
+      {% csrf_token %}
+      <input type="file" name="photo-file" />
+      <br /><br />
+      <input type="submit" class="btn" value="Upload Photo" />
+    </form>
+  
   <div class="col s6">
     <form action="{% url 'add_comment' blogpost.id %}" method="post">
         {% csrf_token %}
@@ -24,6 +40,8 @@
       <thead>
         <tr><th></th></tr>
       </thead>
+      
+  </div>
       <tbody>
         {% for comment in blogpost.comment_set.all %}
           <tr>
