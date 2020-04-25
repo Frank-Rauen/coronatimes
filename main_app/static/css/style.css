@@ -91,3 +91,10 @@ textarea.materialize-textarea {
  font-weight: bold;
  font-family: 'Eagle Lake', cursive;
 }
+
+ a:link {
+  font-family: 'Eagle Lake', cursive;
+  font-weight: bold;
+  color: #fdd835;
+}
+

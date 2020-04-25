@@ -8,6 +8,9 @@
     {{ form.as_p }}
     <input type="submit" class="btn" value="login">
     <input type="hidden" name="next" value="{{ next }}">
+    <div>
+        <a href="/password_reset" style="color:#0d47a1;">Reset Password</a>
+    </div>
 </form>
 
 {% endblock %}

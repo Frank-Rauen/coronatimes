@@ -1,17 +1,26 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
-
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import ListView, DetailView
+<<<<<<< HEAD
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+=======
+>>>>>>> 6e5114345a52c7f2690a6d6a77bbf104f7a5cb0b
 from newsapi import NewsApiClient
 
-from .models import Blogpost, Comment
+import uuid
+import boto3
+
+from .models import Blogpost, Comment, Photo
 from .forms import CommentForm
+S3_BASE_URL = 'https://s3-us-west-1.amazonaws.com/'
+BUCKET = 'catcollector-nn'
 
 
 def home(request):
@@ -33,6 +42,7 @@ def home(request):
 
     return render(request, 'home.html', context={"mylist": mylist})
 
+
 def about(request):
     return render(request, 'about.html')
 
@@ -50,7 +60,8 @@ def blogposts_all(request):
 def blogposts_detail(request, blogpost_id):
     blogpost = Blogpost.objects.get(id=blogpost_id)
     comment_form = CommentForm()
-    return render(request, 'blogposts/detail.html', {'blogpost': blogpost, 'comment_form' : comment_form})
+    return render(request, 'blogposts/detail.html', {'blogpost': blogpost, 'comment_form': comment_form})
+
 
 def signup(request):
     error_message = ''
@@ -74,7 +85,24 @@ def add_comment(request, blogpost_id):
         new_comment = form.save(commit=False)
         new_comment.blogpost_id = blogpost_id
         new_comment.save()
-    return redirect('detail', blogpost_id = blogpost_id)
+    return redirect('detail', blogpost_id=blogpost_id)
+
+
+@login_required
+def add_photo(request, blogpost_id):
+    photo_file = request.FILES.get('photo-file', None)
+    if photo_file:
+        s3 = boto3.client('s3')
+        key = uuid.uuid4().hex[:6] + \
+            photo_file.name[photo_file.name.rfind('.'):]
+        try:
+            s3.upload_fileobj(photo_file, BUCKET, key)
+            url = f"{S3_BASE_URL}{BUCKET}/{key}"
+            photo = Photo(url=url, blogpost_id=blogpost_id)
+            photo.save()
+        except:
+            print('An error occurred uploading file to S3')
+    return redirect('detail', blogpost_id=blogpost_id)
 
 
 class BlogpostCreate(LoginRequiredMixin,CreateView):
@@ -95,4 +123,3 @@ class BlogpostUpdate(UpdateView,LoginRequiredMixin):
 class BlogpostDelete(DeleteView,LoginRequiredMixin):
     model = Blogpost
     success_url = '/blogposts/'
-
