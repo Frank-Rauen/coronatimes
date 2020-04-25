@@ -5,13 +5,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import ListView, DetailView
-<<<<<<< HEAD
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-=======
->>>>>>> 6e5114345a52c7f2690a6d6a77bbf104f7a5cb0b
 from newsapi import NewsApiClient
 
 import uuid
