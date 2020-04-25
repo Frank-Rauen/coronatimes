@@ -4,13 +4,14 @@
 <h1>Your Posts</h1>
 
 {% for blogpost in blogposts %}
-  <div class="card">
-    <a href="{% url 'detail' blogpost.id %}">
+<div class="card">
+  <a href="{% url 'detail' blogpost.id %}">
     <div class="card-content">
       <span class="card-title">{{ blogpost.title }}</span>
       <p>{{ blogpost.body }}</p>
     </div>
-  </div>
+</div>
+<a href="/password_change" style="color:#0d47a1;">Change Password</a>
 {% endfor %}
 
 {% endblock %}

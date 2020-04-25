@@ -7,6 +7,12 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import ListView, DetailView
 
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, DetailView
+
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 from newsapi import NewsApiClient
 
 import uuid
@@ -14,6 +20,8 @@ import boto3
 
 from .models import Blogpost, Comment, Photo
 from .forms import CommentForm
+S3_BASE_URL = 'https://s3-us-west-1.amazonaws.com/'
+BUCKET = 'catcollector-nn'
 
 S3_BASE_URL = 'https://s3-us-west-1.amazonaws.com/'
 BUCKET = 'catcollector-nn'
@@ -39,6 +47,7 @@ def home(request):
 
     return render(request, 'home.html', context={"mylist": mylist})
 
+
 def about(request):
     return render(request, 'about.html')
 
@@ -56,7 +65,8 @@ def blogposts_all(request):
 def blogposts_detail(request, blogpost_id):
     blogpost = Blogpost.objects.get(id=blogpost_id)
     comment_form = CommentForm()
-    return render(request, 'blogposts/detail.html', {'blogpost': blogpost, 'comment_form' : comment_form})
+    return render(request, 'blogposts/detail.html', {'blogpost': blogpost, 'comment_form': comment_form})
+
 
 def signup(request):
     error_message = ''
@@ -80,7 +90,12 @@ def add_comment(request, blogpost_id):
         new_comment = form.save(commit=False)
         new_comment.blogpost_id = blogpost_id
         new_comment.save()
+<<<<<<< HEAD
     return redirect('detail', blogpost_id = blogpost_id)
+=======
+    return redirect('detail', blogpost_id=blogpost_id)
+
+>>>>>>> b8a7472c38a771a57e57d1504060b5be7add47fc
 
 @login_required
 def add_photo(request, blogpost_id):
@@ -99,7 +114,11 @@ def add_photo(request, blogpost_id):
     return redirect('detail', blogpost_id=blogpost_id)
 
 
+<<<<<<< HEAD
 class BlogpostCreate(CreateView,LoginRequiredMixin):
+=======
+class BlogpostCreate(LoginRequiredMixin,CreateView):
+>>>>>>> b8a7472c38a771a57e57d1504060b5be7add47fc
     model = Blogpost
     fields = ['title', 'body']
     success_url = '/blogposts/'
@@ -117,4 +136,3 @@ class BlogpostUpdate(UpdateView,LoginRequiredMixin):
 class BlogpostDelete(DeleteView,LoginRequiredMixin):
     model = Blogpost
     success_url = '/blogposts/'
-

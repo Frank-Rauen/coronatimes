@@ -2,6 +2,7 @@
 {% block content %}
 <h1>{{blogpost.title}}</h1>
 <div class="row">
+<<<<<<< HEAD
 <div class="col s6">
 <div class="card">
   <div class="card-content">
@@ -30,12 +31,31 @@
       <input type="submit" class="btn" value="Upload Photo" />
     </form>
   
+=======
+>>>>>>> b8a7472c38a771a57e57d1504060b5be7add47fc
   <div class="col s6">
-    <form action="{% url 'add_comment' blogpost.id %}" method="post">
+    <div class="card">
+      <div class="card-content">
+        <span class="card-title">{{ blogpost.body }}</span>
+        <p>Posted By: <blockquote>{{ blogpost.user }}</blockquote>
+        </p>
+      </div>
+      <div class="card-action">
+        <a href="{% url 'blogposts_update' blogpost.id %}">Edit</a>
+        <a href="{% url 'blogposts_delete' blogpost.id %}">Delete</a </div>
+      </div>
+      {%for photo in blogpost.photo_set.all%}
+      <img class="responsive-img card-panel" src="{{photo.url}}" />
+      {% empty %}
+      <div class="card-panel teal-text center-align">No Photos Uploaded</div>
+      {% endfor %}
+      <form action="{% url 'add_photo' blogpost.id %}" enctype="multipart/form-data" method="POST" class="card-panel">
         {% csrf_token %}
-        {{ comment_form.as_p }}
-        <input type="submit" class="btn" value="Add Comment">
+        <input type="file" name="photo-file" />
+        <br /><br />
+        <input type="submit" class="btn" value="Upload Photo" />
       </form>
+<<<<<<< HEAD
     <table class="striped">
       <thead>
         <tr><th></th></tr>
@@ -49,8 +69,30 @@
             <p class="card-title">{{ comment.body }}</p>
           </div>
           </tr>
+=======
+      <div class="col s6">
+        <form action="{% url 'add_comment' blogpost.id %}" method="post">
+          {% csrf_token %}
+          {{ comment_form.as_p }}
+          <input type="submit" class="btn" value="Add Comment">
+        </form>
+        <table class="striped">
+          <thead>
+            <tr>
+              <th></th>
+            </tr>
+          </thead>
+      </div>
+      <tbody>
+        {% for comment in blogpost.comment_set.all %}
+        <tr>
+          <div class="card">
+            <p class="card-title">{{ comment.body }}</p>
+          </div>
+        </tr>
+>>>>>>> b8a7472c38a771a57e57d1504060b5be7add47fc
         {% endfor %}
       </tbody>
-    </table>
-  </div>
-{% endblock %}
+      </table>
+    </div>
+    {% endblock %}
