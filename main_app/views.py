@@ -24,10 +24,6 @@ from .forms import CommentForm
 S3_BASE_URL = 'https://s3-us-west-1.amazonaws.com/'
 BUCKET = 'catcollector-nn'
 
-S3_BASE_URL = 'https://s3-us-west-1.amazonaws.com/'
-BUCKET = 'catcollector-nn'
-
-
 
 def home(request):
     newsapi = NewsApiClient(api_key='313c12fcfda3465f89f36b377c088e3b')
